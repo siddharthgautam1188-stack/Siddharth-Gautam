@@ -1,4 +1,4 @@
- // =======================
+// =======================
 // CURSOR
 // =======================
 const cursor = document.querySelector(".cursor");
@@ -45,45 +45,59 @@ revealOnScroll();
 // THEME TOGGLE (CLEAN FINAL)
 // =======================
 // =======================
-// ELITE THEME TOGGLE v2
+// THEME TOGGLE
 // =======================
 
 const toggle = document.getElementById("themeToggle");
 const icon = toggle.querySelector(".icon");
+const themeText = toggle.querySelector(".theme-text");
 
-// apply theme
-function setTheme(isLight){
-  document.body.classList.toggle("light", isLight);
+// Apply Theme
+function setTheme(isLight) {
 
-  // icon animation
-  icon.style.transform = "rotate(180deg) scale(0)";
-  
-  setTimeout(() => {
-    icon.textContent = isLight ? "☀" : "☾";
-    icon.style.transform = "rotate(0deg) scale(1)";
-  }, 150);
+    document.body.classList.toggle("light", isLight);
 
-  localStorage.setItem("theme", isLight ? "light" : "dark");
+    // Icon animation
+    icon.style.transform = "rotate(180deg) scale(0)";
+
+    setTimeout(() => {
+
+        if (isLight) {
+            icon.textContent = "☀";
+            themeText.textContent = "Change to Dark Mode";
+        } else {
+            icon.textContent = "☾";
+            themeText.textContent = "Change to White Mode";
+        }
+
+        icon.style.transform = "rotate(0deg) scale(1)";
+
+    }, 150);
+
+    localStorage.setItem("theme", isLight ? "light" : "dark");
 }
 
-// load saved theme
-const saved = localStorage.getItem("theme");
+// Load saved theme
+const savedTheme = localStorage.getItem("theme");
 
-if(saved){
-  setTheme(saved === "light");
+if (savedTheme === "light") {
+    setTheme(true);
 } else {
-  setTheme(false);
+    setTheme(false);
 }
 
-// click event
+// Toggle theme
 toggle.addEventListener("click", () => {
-  const isLight = !document.body.classList.contains("light");
-  setTheme(isLight);
 
-  // ripple reset trick (forces animation restart)
-  toggle.classList.remove("play");
-  void toggle.offsetWidth;
-  toggle.classList.add("play");
+    const isLight = !document.body.classList.contains("light");
+
+    setTheme(isLight);
+
+    // Restart ripple animation
+    toggle.classList.remove("play");
+    void toggle.offsetWidth;
+    toggle.classList.add("play");
+
 });
 
 const image = document.querySelector(".about-image");
@@ -189,10 +203,17 @@ form.addEventListener("submit", function (e) {
 
 });
 
+// ===========================
+// MOBILE NAVBAR
+// ===========================
+
 const menuBtn = document.getElementById("menuBtn");
 const navRight = document.getElementById("navRight");
+const navLinks = document.querySelectorAll(".nav-links a");
 
+// Open / Close menu
 menuBtn.addEventListener("click", () => {
+
     navRight.classList.toggle("active");
 
     const icon = menuBtn.querySelector("i");
@@ -204,4 +225,35 @@ menuBtn.addEventListener("click", () => {
         icon.classList.remove("fa-times");
         icon.classList.add("fa-bars");
     }
+
+});
+
+// Close menu when any nav link is clicked
+navLinks.forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        navRight.classList.remove("active");
+
+        const icon = menuBtn.querySelector("i");
+        icon.classList.remove("fa-times");
+        icon.classList.add("fa-bars");
+
+    });
+
+});
+
+// Optional: Close menu when window is resized to desktop
+window.addEventListener("resize", () => {
+
+    if (window.innerWidth > 768) {
+
+        navRight.classList.remove("active");
+
+        const icon = menuBtn.querySelector("i");
+        icon.classList.remove("fa-times");
+        icon.classList.add("fa-bars");
+
+    }
+
 });
