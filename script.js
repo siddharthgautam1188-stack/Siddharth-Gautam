@@ -1,4 +1,4 @@
-// =======================
+ // =======================
 // CURSOR
 // =======================
 const cursor = document.querySelector(".cursor");
@@ -187,4 +187,21 @@ form.addEventListener("submit", function (e) {
 
     });
 
+});
+
+const menuBtn = document.getElementById("menuBtn");
+const navRight = document.getElementById("navRight");
+
+menuBtn.addEventListener("click", () => {
+    navRight.classList.toggle("active");
+
+    const icon = menuBtn.querySelector("i");
+
+    if (navRight.classList.contains("active")) {
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-times");
+    } else {
+        icon.classList.remove("fa-times");
+        icon.classList.add("fa-bars");
+    }
 });
